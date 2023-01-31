@@ -20,7 +20,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-# COPY --from=development /usr/src/app/node_modules ./node_modules
+COPY --from=development /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
@@ -36,7 +36,7 @@ USER node
 
 FROM node:16 As production
 
-# COPY  --from=build /usr/src/app/node_modules ./node_modules
+COPY  --from=build /usr/src/app/node_modules ./node_modules
 COPY  --from=build /usr/src/app/dist ./dist
 
 CMD [ "node", "dist/main.js" ]
