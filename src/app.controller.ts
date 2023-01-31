@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return 'API cua Son dep trai qua di';
+    return 'Sao ma son dep trai the';
   }
 }
 
