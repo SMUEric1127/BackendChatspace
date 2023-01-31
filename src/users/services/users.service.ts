@@ -15,7 +15,6 @@ export class UsersService {
     }
 
     findOne(userId: string): Promise<Account> {
-        console.log("Finding: ", userId)
         return this.accountRepository.findOne({
             where: { userId: userId}
         })

@@ -11,8 +11,8 @@ import { ConfigModule } from '@nestjs/config';
   imports: [ConfigModule.forRoot({
     isGlobal: true,
   }),
-  UsersModule, DatabaseModule, SessionManagerModule],
+    UsersModule, DatabaseModule, SessionManagerModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return 'Chao bui sang baby';
+    return 'Son dep trai API';
   }
 }
 
