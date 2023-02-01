@@ -34,6 +34,7 @@ export class SessionManagerService {
     async handshake(body: any) {
         // Verify if userId is exist
         console.log(body)
+        var sessionId = "";
         if (typeof(body.userId) == "undefined") {
             console.log("undefined")
             throw new HttpException('No account found', HttpStatus.UNAUTHORIZED)
@@ -42,17 +43,22 @@ export class SessionManagerService {
         if (!existingAccount) {
             throw new HttpException('No account found', HttpStatus.UNAUTHORIZED)
         }
+        if (existingAccount.sessionId != "" && body.renew == "true") {
+            console.log("RETURNING CURRENT SESSION ID")
+            sessionId = existingAccount.sessionId
+        } else {
+            console.log("GENERATE NEW SESSION ID")
+            const userId = body.userId;
+            const jwtPayload = { userId };
+            const secretKey = global.secretMasterSecretKey;
+            console.log(`Signed with: ${userId} - ${secretKey}`)
+            const sessionId = jwt.sign(jwtPayload, secretKey);
 
-        const userId = body.userId;
-        const jwtPayload = { userId };
-        const secretKey = global.secretMasterSecretKey;
-        console.log(`Signed with: ${userId} - ${secretKey}`)
-        const sessionId = jwt.sign(jwtPayload, secretKey);
+            existingAccount.sessionId = sessionId;
+            await this.accountRepository.save(existingAccount);
 
-        existingAccount.sessionId = sessionId;
-        await this.accountRepository.save(existingAccount);
-
-        // const decoded = JSON.parse(JSON.stringify(jwt.verify(sessionId, global.secretMasterSecretKey)));
+            // const decoded = JSON.parse(JSON.stringify(jwt.verify(sessionId, global.secretMasterSecretKey)));
+        }
         return { sessionId };
     }
 
@@ -73,7 +79,8 @@ export class SessionManagerService {
         console.log(usage)
 
         const array: string[] = [];
-        array.push(choice[0]["text"]);
+        const reply = choice[0]["text"].replace(/\n\n/g, "");
+        array.push(reply);
         array.push(usage["prompt_tokens"], usage["completion_tokens"], usage["total_tokens"])
         return array;
     }
