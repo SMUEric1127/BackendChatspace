@@ -54,6 +54,6 @@ export class UsersController {
             }
         }
 
-        return response.status(HttpStatus.OK).json(returnString)
+        return response.status(HttpStatus.OK).json({returnString})
     }
 }
