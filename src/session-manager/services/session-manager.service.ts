@@ -33,6 +33,7 @@ export class SessionManagerService {
 
     async handshake(body: any) {
         // Verify if userId is exist
+        console.log(body)
         if (typeof(body.userId) == "undefined") {
             console.log("undefined")
             throw new HttpException('No account found', HttpStatus.UNAUTHORIZED)
