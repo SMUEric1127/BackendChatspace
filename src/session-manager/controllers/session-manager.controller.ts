@@ -13,7 +13,7 @@ export class SessionManagerController {
         return "SESS OK"
     }
 
-    @Get('handshake')
+    @Post('handshake')
     async authenticate(@Res() response, @Body() body: any) {
         const sessionId = await this.sessionService.handshake(body);
         return response.status(HttpStatus.OK).json(sessionId)
