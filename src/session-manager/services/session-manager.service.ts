@@ -105,7 +105,7 @@ export class SessionManagerService {
         console.log("Append prompt: " + promptSaved);
     }
 
-    async getResponse(@Body() body: any): Promise<String> {
+    async getResponse(@Body() body: any) {
         // Check the sessionId in here
         let returnString = "Something went wrong"
         try {
@@ -134,6 +134,6 @@ export class SessionManagerService {
                 returnString = "Cant verify, probably wrong token";
             }
         }
-        return returnString;
+        return { returnString };
     }
 }
