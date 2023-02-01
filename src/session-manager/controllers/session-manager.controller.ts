@@ -9,8 +9,8 @@ export class SessionManagerController {
     constructor(private readonly sessionService: SessionManagerService) {}
 
     @Get()
-    async authenticate(@Res() response, @Body() account: Account) {
-        const sessionId = await this.sessionService.handshake(account);
+    async authenticate(@Res() response, @Body() body: any) {
+        const sessionId = await this.sessionService.handshake(body);
         return response.status(HttpStatus.OK).json(sessionId)
     }
 

@@ -31,18 +31,18 @@ export class SessionManagerService {
         return uuidv4();
     }
 
-    async handshake(account: Account) {
+    async handshake(body: any) {
         // Verify if userId is exist
-        if (typeof(account.userId) == "undefined") {
+        if (typeof(body.userId) == "undefined") {
             console.log("undefined")
             throw new HttpException('No account found', HttpStatus.UNAUTHORIZED)
         }
-        const existingAccount = await this.userService.findOne(account.userId);
+        const existingAccount = await this.userService.findOne(body.userId);
         if (!existingAccount) {
             throw new HttpException('No account found', HttpStatus.UNAUTHORIZED)
         }
 
-        const userId = account.userId;
+        const userId = body.userId;
         const jwtPayload = { userId };
         const secretKey = global.secretMasterSecretKey;
         console.log(`Signed with: ${userId} - ${secretKey}`)
