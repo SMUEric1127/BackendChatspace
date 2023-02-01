@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return 'Thy xinh';
+    return 'API Welcome to chatspace production';
   }
 }
 
