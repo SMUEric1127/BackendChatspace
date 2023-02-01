@@ -8,13 +8,13 @@ import { SessionManagerService } from '../services/session-manager.service';
 export class SessionManagerController {
     constructor(private readonly sessionService: SessionManagerService) {}
 
-    @Get()
+    @Post('handshake/')
     async authenticate(@Res() response, @Body() body: any) {
         const sessionId = await this.sessionService.handshake(body);
         return response.status(HttpStatus.OK).json(sessionId)
     }
 
-    @Post()
+    @Post('prompt/')
     async getResponse(@Res() response, @Body() body: any) {
         const responseString = await this.sessionService.getResponse(body);
         return response.status(HttpStatus.OK).json(responseString)
