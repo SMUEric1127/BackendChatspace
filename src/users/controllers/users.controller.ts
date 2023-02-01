@@ -24,7 +24,7 @@ export class UsersController {
         })
     }
 
-    @Get('tokens/:userId')
+    @Post('tokens/:userId')
     async findByUserId(@Res() response, @Param('userId') userId, @Body() body: any) {
         // Verify the sessionId to see if it's valid first
         let returnString = "Something went wrong"

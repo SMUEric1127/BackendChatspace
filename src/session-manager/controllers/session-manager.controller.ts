@@ -9,12 +9,17 @@ export class SessionManagerController {
     constructor(private readonly sessionService: SessionManagerService) {}
     
     @Get()
+    async test() {
+        return "SESS OK"
+    }
+
+    @Get('handshake')
     async authenticate(@Res() response, @Body() body: any) {
         const sessionId = await this.sessionService.handshake(body);
         return response.status(HttpStatus.OK).json(sessionId)
     }
 
-    @Post()
+    @Post('prompt')
     async getResponse(@Res() response, @Body() body: any) {
         const responseString = await this.sessionService.getResponse(body);
         return response.status(HttpStatus.OK).json(responseString)
