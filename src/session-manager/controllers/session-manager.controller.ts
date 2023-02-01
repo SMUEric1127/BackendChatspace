@@ -12,7 +12,12 @@ export class SessionManagerController {
     async test() {
         return "OK"
     }
-    
+
+    @Get('handshake') 
+    async testHand() {
+        return "OK HANDSHAKE"
+    }
+
     @Post('handshake')
     async authenticate(@Res() response, @Body() body: any) {
         const sessionId = await this.sessionService.handshake(body);
