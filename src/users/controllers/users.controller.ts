@@ -42,8 +42,9 @@ export class UsersController {
                 console.log("Asking for different account that is not yours")
                 throw new HttpException('No permission', HttpStatus.FORBIDDEN)
             }
-            // TODO: Add verify the timestamp and request new one
+            
             returnString = JSON.parse(JSON.stringify(await this.usersService.findOne(userId))).totalTokens
+            console.log("Finding: ", userId, " got: ", JSON.parse(JSON.stringify(await this.usersService.findOne(userId))).totalTokens)
         } catch (err) {
             console.log(err.message)
             if (err.message === "invalid signature") {
