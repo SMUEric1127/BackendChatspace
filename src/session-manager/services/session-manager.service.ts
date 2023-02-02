@@ -43,7 +43,7 @@ export class SessionManagerService {
         if (!existingAccount) {
             throw new HttpException('No account found', HttpStatus.UNAUTHORIZED)
         }
-        if (existingAccount.sessionId != "" && body.renew == "true") {
+        if (existingAccount.sessionId != "" && body.renew == "false") {
             console.log("RETURNING CURRENT SESSION ID")
             sessionId = existingAccount.sessionId
         } else {
