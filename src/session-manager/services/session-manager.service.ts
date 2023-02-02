@@ -135,10 +135,10 @@ export class SessionManagerService {
             await this.appendPrompt(body, resp, decoded)
         } catch (err) {
             if (err.name === "TokenExpiredError") {
-                returnString = "Expired Token rehandshake";
+                throw new HttpException("Expired Token rehandshake", HttpStatus.UNAUTHORIZED)
             } else {
                 console.log(err)
-                returnString = "Cant verify, probably wrong token";
+                throw new HttpException("Cant verify, probably wrong token", HttpStatus.UNAUTHORIZED)
             }
         }
         return { returnString };
