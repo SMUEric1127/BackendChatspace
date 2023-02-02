@@ -21,8 +21,7 @@ export class UsersService {
     }
 
     async createUser(account: Account): Promise<Account> {
-        const existingAccount = await this.findOne(account.userId);
-        if (existingAccount) {
+        if (await this.findOne(account.userId) || await this.findOne(account.phoneNumber)) {
             throw new HttpException('Account already exists', HttpStatus.CONFLICT)
         }
 
