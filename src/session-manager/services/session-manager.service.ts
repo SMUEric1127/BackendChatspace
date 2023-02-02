@@ -52,7 +52,7 @@ export class SessionManagerService {
             const jwtPayload = { userId };
             const secretKey = global.secretMasterSecretKey;
             console.log(`Signed with: ${userId} - ${secretKey}`)
-            const sessionId = jwt.sign(jwtPayload, secretKey);
+            sessionId = jwt.sign(jwtPayload, secretKey);
 
             existingAccount.sessionId = sessionId;
             await this.accountRepository.save(existingAccount);
