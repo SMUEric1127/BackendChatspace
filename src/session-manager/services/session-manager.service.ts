@@ -71,7 +71,7 @@ export class SessionManagerService {
             top_p: parseFloat(process.env.TOP_P),
             frequency_penalty: parseFloat(process.env.FREQ_PENALTY),
             presence_penalty: parseFloat(process.env.PRES_PENALTY),
-            stop: [" Human:", " AI:"],
+            // stop: [" Human:", " AI:"],
         })
         // console.log(response["data"]["usage"]["total_tokens"])
         const choice = response["data"]["choices"]
