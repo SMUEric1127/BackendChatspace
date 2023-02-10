@@ -16,12 +16,18 @@ export class UsersService {
 
     findOne(userId: string): Promise<Account> {
         return this.accountRepository.findOne({
-            where: { userId: userId}
+            where: { userId: userId }
+        })
+    }
+
+    findOnePO(phoneNumber: string): Promise<Account> {
+        return this.accountRepository.findOne({
+            where: { phoneNumber: phoneNumber }
         })
     }
 
     async createUser(account: Account): Promise<Account> {
-        if (await this.findOne(account.userId) || await this.findOne(account.phoneNumber)) {
+        if (await this.findOne(account.userId) || await this.findOnePO(account.phoneNumber)) {
             throw new HttpException('Account already exists', HttpStatus.CONFLICT)
         }
 
