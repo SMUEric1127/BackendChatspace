@@ -27,12 +27,14 @@ export class UsersService {
     }
 
     async createUser(account: Account): Promise<Account> {
-        if (await this.findOne(account.userId) || await this.findOnePO(account.phoneNumber)) {
-            throw new HttpException('Account already exists', HttpStatus.CONFLICT)
+        const findAccount = await this.findOne(account.userId) == null
+        if (await this.findOne(account.userId) == null && await this.findOnePO(account.phoneNumber)  == null) {
+            // automatically increase the id
+            return this.accountRepository.save(account)
         }
-
-        // automatically increase the id
-        return this.accountRepository.save(account)
+        console.log(await this.findOne(account.userId))
+        console.log(await this.findOnePO(account.phoneNumber))
+        throw new HttpException('Account already exists', HttpStatus.CONFLICT)
     }
 
     async getTokens(userId: string) {
