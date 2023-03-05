@@ -24,10 +24,4 @@ export class SessionManagerController {
         const responseString = await this.sessionService.getResponse(body);
         return response.status(HttpStatus.OK).json(responseString)
     }
-
-    // @Post('test')
-    // async testHello(@Res() response, @Body() body: any) {
-    //     const responseString = await this.sessionService.sendPrompt(body.prompt)
-    //     return response.status(HttpStatus.OK).json(responseString[0])
-    // }
 }

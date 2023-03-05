@@ -65,12 +65,7 @@ export class SessionManagerService {
     async sendPrompt(prompt: string): Promise<string[]> {
         const response = await openai.createCompletion({
             model: process.env.MODEL,
-            prompt: `AI: How can I help you? Human: ${prompt} ?`,
-            temperature: parseFloat(process.env.TEMPERATURE),
-            max_tokens: parseFloat(process.env.MAX_TOKENS),
-            top_p: parseFloat(process.env.TOP_P),
-            frequency_penalty: parseFloat(process.env.FREQ_PENALTY),
-            presence_penalty: parseFloat(process.env.PRES_PENALTY),
+            messages: [{"role": "user", "content": prompt }],
         })
         // console.log(response["data"]["usage"]["total_tokens"])
         const choice = response["data"]["choices"]
@@ -78,7 +73,7 @@ export class SessionManagerService {
         console.log(usage)
 
         const array: string[] = [];
-        const reply = choice[0]["text"].replace(/\n\n/g, "").replace("AI:","").replace("AI","");
+        const reply = choice[0]["message"].replace(/\n\n/g, "").replace("AI:","").replace("AI","");
         array.push(reply);
         array.push(usage["prompt_tokens"], usage["completion_tokens"], usage["total_tokens"]);
         return array;
