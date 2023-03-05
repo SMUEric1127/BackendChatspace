@@ -2,6 +2,9 @@
 /dist
 # /node_modules
 
+/blog-mysql
+.env
+
 # Logs
 logs
 *.log

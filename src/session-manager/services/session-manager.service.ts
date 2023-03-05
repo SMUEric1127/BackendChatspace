@@ -106,6 +106,12 @@ export class SessionManagerService {
         console.log("Append prompt: " + promptSaved);
     }
 
+    async getResponseDirect(@Body() body: any) {
+        const resp = await this.sendPrompt(body.prompt);
+        const returnString = resp[0]
+        return returnString
+    }
+
     async getResponse(@Body() body: any) {
         // Check the sessionId in here
         let returnString = "Something went wrong"
