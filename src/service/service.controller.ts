@@ -43,7 +43,7 @@ export class ServiceController {
         response.then(async (response) => {
             // Completed, print out the response
             // console.log(response.data)
-            // console.log(response.data.choices[0].message["content"]);
+            console.log(response.data.choices[0].message["content"]);
             console.log("Done processing, total tokens: ", response.data.usage["total_tokens"])
 
             // Completed, update the data
