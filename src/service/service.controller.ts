@@ -1,5 +1,5 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { Body, Headers } from '@nestjs/common/decorators/http/route-params.decorator';
+import { Body, Headers, Param } from '@nestjs/common/decorators/http/route-params.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { Configuration, OpenAIApi } from 'openai';
 import { ServiceService } from './service.service';
@@ -68,9 +68,7 @@ export class ServiceController {
     }
 
     @Get('/prompt')
-    async getResponseFromStatus(
-        @Body('status') status: string
-    ) {
+    async getResponseFromStatus(@Param('status') status: string) {
         return await this.serviceService.getResponseFromStatus(status)
     }
 }
