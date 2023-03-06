@@ -68,8 +68,8 @@ export class ServiceController {
     }
 
     @Get('/prompt')
-    async getResponseFromStatus(@Query('status') status: string, @Ip() ip) {
-        console.log("Retrieving: ", status, " - from IP: ", ip)
+    async getResponseFromStatus(@Query('status') status: string, @Req() request) {
+        console.log("Retrieving: ", status, " - from IP: ", request.ip)
         const prompt = await this.serviceService.getResponseFromStatus(status)
         const response = prompt[0]["response"]
         if (response != "") {
