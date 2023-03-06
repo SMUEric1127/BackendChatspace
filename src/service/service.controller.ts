@@ -72,7 +72,7 @@ export class ServiceController {
         console.log("Retrieving: ", status, " - from IP: ", request.ip)
         const prompt = await this.serviceService.getResponseFromStatus(status)
         const response = prompt[0]["response"]
-        if (response != "") {
+        if (response) {
             return {
                 status: HttpStatus.ACCEPTED,
                 response: response
@@ -80,6 +80,7 @@ export class ServiceController {
         } else {
             return {
                 status: HttpStatus.NO_CONTENT,
+                response: "Please wait"
             }
         }
     }
