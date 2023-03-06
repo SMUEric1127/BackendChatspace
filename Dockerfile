@@ -27,6 +27,7 @@ COPY --from=development /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+RUN chmod +x node_modules/.bin/react-scripts
 RUN npm run build
 
 ENV NODE_ENV production
