@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const passport_1 = require("@nestjs/passport");
 const auth_service_1 = require("./auth.service");
 const dotenv = require('dotenv');
 dotenv.config();
@@ -22,29 +21,19 @@ let AuthController = class AuthController {
     constructor(authServices) {
         this.authServices = authServices;
     }
-    async login(req) {
-        return this.authServices.loginWithCredentials(req.user);
-    }
-    async handshake(req) {
-        const token = req.headers.authorization.split(' ')[1];
-        return this.authServices.renewCredentials(token);
+    async login(username, password) {
+        return this.authServices.loginWithCredentials(username, password);
     }
 };
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('local')),
     (0, common_1.Post)('login'),
-    __param(0, (0, common_1.Request)()),
+    __param(0, (0, common_1.Body)('username')),
+    __param(1, (0, common_1.Body)('password')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String,
+        String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
-__decorate([
-    (0, common_1.Post)('handshake'),
-    __param(0, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "handshake", null);
 AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

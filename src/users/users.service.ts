@@ -25,7 +25,8 @@ export class UsersService {
 
     async getUser({ username, password}): Promise<User | undefined> {
         return this.userModel.findOne({
-            username,
+            username: username,
+            password: password
         });
     }
 }

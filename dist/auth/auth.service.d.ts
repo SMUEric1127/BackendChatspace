@@ -5,10 +5,13 @@ export declare class AuthService {
     private jwtService;
     constructor(usersService: UsersService, jwtService: JwtService);
     validateUserCredentials(username: String, password: String): Promise<any>;
-    loginWithCredentials(user: any): Promise<{
+    loginWithCredentials(username: any, password: any): Promise<{
+        statusCode: number;
+        message: string;
+        access_token?: undefined;
+    } | {
         access_token: string;
-    }>;
-    renewCredentials(token: string): Promise<{
-        access_token: string;
+        statusCode?: undefined;
+        message?: undefined;
     }>;
 }

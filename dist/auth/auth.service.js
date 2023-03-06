@@ -13,44 +13,28 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const users_service_1 = require("../users/users.service");
-const jwt = require("jsonwebtoken");
 let AuthService = class AuthService {
     constructor(usersService, jwtService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
     }
     async validateUserCredentials(username, password) {
+        console.log("FINDING: ", username, password);
         const user = await this.usersService.getUser({ username, password });
         return user !== null && user !== void 0 ? user : null;
     }
-    async loginWithCredentials(user) {
-        const payload = { username: user.username };
+    async loginWithCredentials(username, password) {
+        const userReturn = await this.validateUserCredentials(username, password);
+        if (userReturn == null) {
+            return {
+                "statusCode": 500,
+                "message": "Invalid username or password"
+            };
+        }
+        const payload = { username: username };
         return {
             access_token: this.jwtService.sign(payload),
         };
-    }
-    async renewCredentials(token) {
-        try {
-            console.log("TOKEN:", token);
-            const decoded = jwt.verify(token, process.env.SECRET_KEY);
-            console.log("Not expired yet");
-            throw new common_1.UnauthorizedException();
-        }
-        catch (error) {
-            console.log(error.name);
-            if (error.name == "TokenExpiredError") {
-                console.log("IS EXPIRED");
-                const decoded = jwt.verify(token, process.env.SECRET_KEY, { ignoreExpiration: true });
-                const payload = { username: decoded.username };
-                return {
-                    access_token: this.jwtService.sign(payload)
-                };
-            }
-            else {
-                console.log("Not expired yet");
-                throw new common_1.UnauthorizedException();
-            }
-        }
     }
 };
 AuthService = __decorate([

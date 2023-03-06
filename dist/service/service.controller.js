@@ -8,11 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServiceController = void 0;
 const common_1 = require("@nestjs/common");
+const route_params_decorator_1 = require("@nestjs/common/decorators/http/route-params.decorator");
 const passport_1 = require("@nestjs/passport");
 const openai_1 = require("openai");
+const service_service_1 = require("./service.service");
+const { v4: uuidv4 } = require('uuid');
 const dotenv = require('dotenv');
 dotenv.config();
 const configuration = new openai_1.Configuration({
@@ -20,45 +26,65 @@ const configuration = new openai_1.Configuration({
 });
 const openai = new openai_1.OpenAIApi(configuration);
 let ServiceController = class ServiceController {
-    getHello() {
+    constructor(serviceService) {
+        this.serviceService = serviceService;
+    }
+    getHello(headers) {
+        this.serviceService.getUsernameFromHeader(headers);
         return "Service API";
     }
-    async genImage() {
-        var image_url;
-        try {
-            const response = await openai.createImage({
-                prompt: "a white siamese cat",
-                n: 1,
-                size: "256x256",
-            });
-            image_url = response.data.data[0].url;
-            console.log(image_url);
-        }
-        catch (error) {
+    async genResponse(prompt, headers) {
+        const status = uuidv4();
+        var response = openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            max_tokens: Number(process.env.MAX_TOKENS),
+            messages: [{ role: "user", content: `rule: response under ${process.env.MAX_TOKENS} tokens \n` + prompt }],
+        });
+        response.then(async (response) => {
+            console.log("Done processing, total tokens: ", response.data.usage["total_tokens"]);
+            await this.serviceService.updateStatus(status, response.data.choices[0].message["content"], response.data.usage["total_tokens"]);
+            console.log("Posted to MongoDB");
+        }).catch((error) => {
             if (error.response) {
                 console.log(error.response.status);
                 console.log(error.response.data);
             }
-        }
-        return image_url;
+        });
+        const username = await this.serviceService.getUsernameFromHeader(headers);
+        this.serviceService.appendPrompt(status, username);
+        return status;
+    }
+    async getResponseFromStatus(status) {
+        return await this.serviceService.getResponseFromStatus(status);
     }
 };
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(),
+    __param(0, (0, route_params_decorator_1.Headers)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", String)
 ], ServiceController.prototype, "getHello", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Post)('gen'),
+    (0, common_1.Post)('/prompt'),
+    __param(0, (0, route_params_decorator_1.Body)('prompt')),
+    __param(1, (0, route_params_decorator_1.Headers)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
-], ServiceController.prototype, "genImage", null);
+], ServiceController.prototype, "genResponse", null);
+__decorate([
+    (0, common_1.Get)('/prompt'),
+    __param(0, (0, route_params_decorator_1.Body)('status')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ServiceController.prototype, "getResponseFromStatus", null);
 ServiceController = __decorate([
-    (0, common_1.Controller)('service')
+    (0, common_1.Controller)('service'),
+    __metadata("design:paramtypes", [service_service_1.ServiceService])
 ], ServiceController);
 exports.ServiceController = ServiceController;
 //# sourceMappingURL=service.controller.js.map

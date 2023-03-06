@@ -10,10 +10,13 @@ exports.ServiceModule = void 0;
 const common_1 = require("@nestjs/common");
 const service_service_1 = require("./service.service");
 const service_controller_1 = require("./service.controller");
+const mongoose_1 = require("@nestjs/mongoose");
+const prompt_model_1 = require("./prompt.model");
 let ServiceModule = class ServiceModule {
 };
 ServiceModule = __decorate([
     (0, common_1.Module)({
+        imports: [mongoose_1.MongooseModule.forFeature([{ name: "Prompt", schema: prompt_model_1.PromptSchema }])],
         providers: [service_service_1.ServiceService],
         controllers: [service_controller_1.ServiceController]
     })

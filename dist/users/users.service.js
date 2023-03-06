@@ -36,7 +36,8 @@ let UsersService = class UsersService {
     }
     async getUser({ username, password }) {
         return this.userModel.findOne({
-            username,
+            username: username,
+            password: password
         });
     }
 };

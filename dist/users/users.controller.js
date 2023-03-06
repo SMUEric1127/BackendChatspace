@@ -14,20 +14,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const passport_1 = require("@nestjs/passport");
 const users_service_1 = require("./users.service");
-const bcrypt = require("bcrypt");
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
     }
     async createUser(username, password) {
-        const saltOrRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltOrRounds);
-        return this.userService.createUser(username, hashedPassword);
-    }
-    async getAllUsers() {
-        return this.userService.getUsers();
+        return this.userService.createUser(username, password);
     }
 };
 __decorate([
@@ -39,13 +32,6 @@ __decorate([
         String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "createUser", null);
-__decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "getAllUsers", null);
 UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
