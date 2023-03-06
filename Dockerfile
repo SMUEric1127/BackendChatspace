@@ -24,6 +24,8 @@ COPY --from=development /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+RUN npm install
+
 RUN npm run build
 
 ENV NODE_ENV production
