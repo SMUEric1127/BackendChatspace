@@ -29,6 +29,8 @@ COPY . .
 
 RUN chmod 755 ./node_modules/.bin/
 
+RUN npm install -g @nestjs/cli
+
 RUN npm run build
 
 ENV NODE_ENV production
