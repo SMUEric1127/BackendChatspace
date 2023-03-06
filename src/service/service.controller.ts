@@ -64,7 +64,7 @@ export class ServiceController {
         this.serviceService.appendPrompt(status, username);
 
         // Return the status code to the user to poll every 1 seconds
-        return status;
+        return {status};
     }
 
     @Get('/prompt')
