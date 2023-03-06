@@ -52,9 +52,10 @@ let ServiceController = class ServiceController {
         });
         const username = await this.serviceService.getUsernameFromHeader(headers);
         this.serviceService.appendPrompt(status, username);
-        return status;
+        return { status };
     }
     async getResponseFromStatus(status) {
+        console.log("Retrieving: ", status);
         return await this.serviceService.getResponseFromStatus(status);
     }
 };
@@ -77,7 +78,7 @@ __decorate([
 ], ServiceController.prototype, "genResponse", null);
 __decorate([
     (0, common_1.Get)('/prompt'),
-    __param(0, (0, route_params_decorator_1.Body)('status')),
+    __param(0, (0, route_params_decorator_1.Param)('status')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

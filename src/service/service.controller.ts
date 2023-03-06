@@ -69,6 +69,7 @@ export class ServiceController {
 
     @Get('/prompt')
     async getResponseFromStatus(@Param('status') status: string) {
+        console.log("Retrieving: ", status)
         return await this.serviceService.getResponseFromStatus(status)
     }
 }

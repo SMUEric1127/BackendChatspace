@@ -28,7 +28,9 @@ export declare class ServiceController {
     private readonly serviceService;
     constructor(serviceService: ServiceService);
     getHello(headers: any): string;
-    genResponse(prompt: string, headers: any): Promise<any>;
+    genResponse(prompt: string, headers: any): Promise<{
+        status: any;
+    }>;
     getResponseFromStatus(status: string): Promise<(import("mongoose").Document<unknown, any, import("./prompt.model").Prompt> & import("./prompt.model").Prompt & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
