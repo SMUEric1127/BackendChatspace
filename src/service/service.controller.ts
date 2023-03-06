@@ -74,12 +74,12 @@ export class ServiceController {
         const response = prompt[0]["response"]
         if (response) {
             return {
-                status: HttpStatus.ACCEPTED,
+                statusCode: HttpStatus.ACCEPTED,
                 response: response
             }
         } else {
             return {
-                status: HttpStatus.NO_CONTENT,
+                statusCode: HttpStatus.NO_CONTENT,
                 response: "Please wait"
             }
         }
