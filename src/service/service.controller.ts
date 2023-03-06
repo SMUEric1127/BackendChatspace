@@ -1,5 +1,5 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { Body, Headers, Param } from '@nestjs/common/decorators/http/route-params.decorator';
+import { Controller, Get, HttpException, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Headers, Ip, Param, Query, Req } from '@nestjs/common/decorators/http/route-params.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { Configuration, OpenAIApi } from 'openai';
 import { ServiceService } from './service.service';
@@ -68,8 +68,19 @@ export class ServiceController {
     }
 
     @Get('/prompt')
-    async getResponseFromStatus(@Param('status') status: string) {
-        console.log("Retrieving: ", status)
-        return await this.serviceService.getResponseFromStatus(status)
+    async getResponseFromStatus(@Query('status') status: string, @Ip() ip) {
+        console.log("Retrieving: ", status, " - from IP: ", ip)
+        const prompt = await this.serviceService.getResponseFromStatus(status)
+        const response = prompt[0]["response"]
+        if (response != "") {
+            return {
+                status: HttpStatus.ACCEPTED,
+                response: response
+            }
+        } else {
+            return {
+                status: HttpStatus.NO_CONTENT,
+            }
+        }
     }
 }

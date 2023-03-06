@@ -54,9 +54,21 @@ let ServiceController = class ServiceController {
         this.serviceService.appendPrompt(status, username);
         return { status };
     }
-    async getResponseFromStatus(status) {
-        console.log("Retrieving: ", status);
-        return await this.serviceService.getResponseFromStatus(status);
+    async getResponseFromStatus(status, ip) {
+        console.log("Retrieving: ", status, " - from IP: ", ip);
+        const prompt = await this.serviceService.getResponseFromStatus(status);
+        const response = prompt[0]["response"];
+        if (response != "") {
+            return {
+                status: common_1.HttpStatus.ACCEPTED,
+                response: response
+            };
+        }
+        else {
+            return {
+                status: common_1.HttpStatus.NO_CONTENT,
+            };
+        }
     }
 };
 __decorate([
@@ -78,9 +90,10 @@ __decorate([
 ], ServiceController.prototype, "genResponse", null);
 __decorate([
     (0, common_1.Get)('/prompt'),
-    __param(0, (0, route_params_decorator_1.Param)('status')),
+    __param(0, (0, route_params_decorator_1.Query)('status')),
+    __param(1, (0, route_params_decorator_1.Ip)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ServiceController.prototype, "getResponseFromStatus", null);
 ServiceController = __decorate([
