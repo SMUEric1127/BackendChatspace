@@ -22,7 +22,7 @@ export class ServiceController {
     @Get()
     getHello(@Headers() headers): string {
         this.serviceService.getUsernameFromHeader(headers)
-        return "Service API";
+        return "Welcome to Services API";
     }
 
     @UseGuards(AuthGuard('jwt'))

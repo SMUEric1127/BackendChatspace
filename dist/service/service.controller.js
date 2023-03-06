@@ -31,7 +31,7 @@ let ServiceController = class ServiceController {
     }
     getHello(headers) {
         this.serviceService.getUsernameFromHeader(headers);
-        return "Service API";
+        return "Welcome to Services API";
     }
     async genResponse(prompt, headers) {
         const status = uuidv4();
