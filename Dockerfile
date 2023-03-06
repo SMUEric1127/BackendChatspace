@@ -24,6 +24,7 @@ COPY --from=development /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+USER root
 RUN npm install
 
 RUN npm run build
