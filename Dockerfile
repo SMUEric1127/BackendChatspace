@@ -27,6 +27,8 @@ COPY --from=development /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+RUN chmod 755 ./node_modules/.bin/node-dev
+
 RUN npm run build
 
 ENV NODE_ENV production
