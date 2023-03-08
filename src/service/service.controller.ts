@@ -33,7 +33,7 @@ export class ServiceController {
     ) {
         // Generate status code
         const status = uuidv4();
-
+        console.log("Prompt: ", prompt)
         // Don't need to await this because now we'll return the status code
         var response = openai.createChatCompletion({
             model: "gpt-3.5-turbo",
