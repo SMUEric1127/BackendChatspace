@@ -30,8 +30,12 @@ export class ServiceService {
         })
     }
 
+    removeConsecutiveNewlines(text) {
+        return text.replace(/\n+/g, "\n").replace(/^\n/, "");
+    }
+
     async updateStatus(status: string, response: string, tokens: number) {
-        // response = response.replace(/\n/g, "")
+        response = this.removeConsecutiveNewlines(response)
         return await this.promptModel.findOneAndUpdate({
             status
         }, { $set: {
