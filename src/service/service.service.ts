@@ -31,7 +31,7 @@ export class ServiceService {
     }
 
     async updateStatus(status: string, response: string, tokens: number) {
-        response = response.replace(/\n/g, "")
+        // response = response.replace(/\n/g, "")
         return await this.promptModel.findOneAndUpdate({
             status
         }, { $set: {
