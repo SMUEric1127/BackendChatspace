@@ -38,7 +38,7 @@ export class ServiceController {
         var response = openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             max_tokens: Number(process.env.MAX_TOKENS),
-            messages: [{ role: "user", content: `Answer under ${process.env.MAX_TOKENS} tokens\n` + prompt + "\nAnswer:"}],
+            messages: [{ role: "user", content: prompt}],
         });
         response.then(async (response) => {
             // Completed, print out the response
